@@ -35,6 +35,13 @@ ALTER TABLE T_CUSTOMER MODIFY(
 	customerEmail,NOT NULL	
 );
 
+CREATE TABLE TAX(
+	prov CHAR(2),
+	prov_hst_rate NUMBER(4,3),
+	gst_rate NUMBER(4,3),
+	pst_rate NUMBER(4,3),
+);
+
 CREATE TABLE T_ORDER (
 	order# NUMBER CONSTRAINT t_order_ordnum_pk PRIMARY KEY,
 	customer# NUMBER CONSTRAINT t_order_custnum_fk FOREIGN KEY,
