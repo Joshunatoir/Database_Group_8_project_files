@@ -35,13 +35,19 @@ ALTER TABLE T_CUSTOMER MODIFY(
 	customerEmail,NOT NULL	
 );
 
-CREATE TABLE TAX(
+CREATE TABLE T_TAX(
 	prov CHAR(2),
 	prov_hst_rate NUMBER(4,3),
 	gst_rate NUMBER(4,3),
-	pst_rate NUMBER(4,3),
+	pst_rate NUMBER(4,3)
 );
 
+CREATE TABLE T_SHIPPING_RATE(
+	shiprate# NUMBER,
+	min_weight NUMBER(6,2),
+	max_weight NUMBER(6,2),
+	shippng_amount NUMBER(6,2)
+);
 CREATE TABLE T_ORDER (
 	order# NUMBER CONSTRAINT t_order_ordnum_pk PRIMARY KEY,
 	customer# NUMBER CONSTRAINT t_order_custnum_fk FOREIGN KEY,
