@@ -36,17 +36,36 @@ ALTER TABLE T_CUSTOMER MODIFY(
 );
 
 CREATE TABLE T_TAX(
-	prov CHAR(2),
+	prov CHAR(2) PRIMARY KEY,
 	prov_hst_rate NUMBER(4,3),
 	gst_rate NUMBER(4,3),
 	pst_rate NUMBER(4,3)
 );
 
 CREATE TABLE T_SHIPPING_RATE(
-	shiprate# NUMBER,
+	shiprateId NUMBER PRIMARY KEY,
 	min_weight NUMBER(6,2),
 	max_weight NUMBER(6,2),
 	shippng_amount NUMBER(6,2)
+);
+
+CREATE TABLE T_SUPPLIER(
+	supplierId NUMBER PRIMARY KEY,
+	supplierName VARCHAR2(100) NOT NULL,
+	supplierEmail VARCHAR2(100)
+		NOT NULL
+		UNIQUE,
+	city VARCHAR2(100),
+	supplierProv CHAR(2),
+	CONSTRAINT ck_tim_supplierProv CHECK (REGEXP_LIKE(supplierProv,[A-Z][A-Z][A-Z]))
+);
+
+CREATE TABLE T_SUPPLIER_ITEM(
+	supplierId NUMBER PRIMARY KEY,
+	productId NUMBER PRIMARY KEY,
+	Field TYPE UNIQUE,
+	CONSTRAINT fk_tim_supplier# FOREIGN KEY(supplierId) REFERENCES T_SUPPLIER_ITEM(supplierId),
+	CONSTRAINT fk_tim_product# FOREIGN KEY(productId) REFERENCES T_SUPPLIER_ITEM(supplierId)
 );
 CREATE TABLE T_ORDER (
 	order# NUMBER CONSTRAINT t_order_ordnum_pk PRIMARY KEY,
