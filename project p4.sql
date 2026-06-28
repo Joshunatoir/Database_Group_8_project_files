@@ -25,6 +25,12 @@ DROP TABLE timber_supplier CASCADE CONSTRAINTS;
 rem drop timber_category
 DROP TABLE timber_category CASCADE CONSTRAINTS;
 
+CREATE TABLE timber_category (
+  category# NUMBER CONSTRAINT category_num_pk PRIMARY KEY,
+	name VARCHAR2(100) NOT NULL,
+	parent_category# NUMBER CONSTRAINT parent_cat#_fk REFERENCES timber_category(category#)
+);
+
 CREATE TABLE timber_customer (
 	customer# NUMBER,
 	firstname VARCHAR2(50),
