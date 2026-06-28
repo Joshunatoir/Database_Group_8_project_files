@@ -31,6 +31,17 @@ CREATE TABLE timber_category (
 	parent_category# NUMBER CONSTRAINT parent_cat#_fk REFERENCES timber_category(category#)
 );
 
+CREATE TABLE timber_product (
+  product# NUMBER CONSTRAINT product_num_pk PRIMARY KEY,
+	category# NUMBER CONSTRAINT category_num_fk REFERENCES timber_category(category#),
+	price NUMBER(12,2) NOT NULL, CONSTRAINT price_ck CHECK(price>0),
+	quantity_on_hand NUMBER(12) NOT NULL, CONSTRAINT quantity_ck CHECK (quantity_on_hand>=0),
+	description VARCHAR2(1000) NOT NULL,
+	title VARCHAR2(150) NOT NULL,
+	weight_kg NUMBER(12,2) NOT NULL, CONSTRAINT weight_ck CHECK (weight_kg>0),
+	isTaxExempt NUMBER(1) NOT NULL, CONSTRAINT is_taxExempt_ck CHECK (isTaxExempt in (0,1))
+);
+
 CREATE TABLE timber_customer (
 	customer# NUMBER,
 	firstname VARCHAR2(50),
@@ -77,6 +88,24 @@ CREATE TABLE T_SHIPPING_RATE(
 	min_weight NUMBER(6,2),
 	max_weight NUMBER(6,2),
 	shippng_amount NUMBER(6,2)
+);
+CREATE TABLE T_SUPPLIER(
+	supplierId NUMBER PRIMARY KEY,
+	supplierName VARCHAR2(100) NOT NULL,
+	supplierEmail VARCHAR2(100)
+		NOT NULL
+		UNIQUE,
+	city VARCHAR2(100),
+	supplierProv CHAR(2),
+	CONSTRAINT ck_tim_supplierProv CHECK (REGEXP_LIKE(supplierProv,[A-Z][A-Z][A-Z]))
+);
+
+CREATE TABLE T_SUPPLIER_ITEM(
+	supplierId NUMBER PRIMARY KEY,
+	productId NUMBER PRIMARY KEY,
+	Field TYPE UNIQUE,
+	CONSTRAINT fk_tim_supplier# FOREIGN KEY(supplierId) REFERENCES T_SUPPLIER_ITEM(supplierId),
+	CONSTRAINT fk_tim_product# FOREIGN KEY(productId) REFERENCES T_SUPPLIER_ITEM(supplierId)
 );
 CREATE TABLE T_ORDER (
 	order# NUMBER CONSTRAINT t_order_ordnum_pk PRIMARY KEY,
