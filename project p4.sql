@@ -10,12 +10,10 @@ rem drop timber_order
 DROP TABLE timber_order CASCADE CONSTRAINTS;
 rem drop timber_ship_rate
 DROP TABLE timber_ship_rate CASCADE CONSTRAINTS;
-rem drop timber_customer_product_review
-DROP TABLE timber_customer_product_review CASCADE CONSTRAINTS;
+rem drop timber_review
+DROP TABLE timber_review CASCADE CONSTRAINTS;
 rem drop timber_customer
 DROP TABLE timber_customer CASCADE CONSTRAINTS;
-rem drop timber_product_review
-DROP TABLE timber_product_review CASCADE CONSTRAINTS;
 rem drop timber_product_supplier
 DROP TABLE timber_product_supplier CASCADE CONSTRAINTS;
 rem drop timber_product
@@ -74,6 +72,15 @@ ALTER TABLE timber_customer MODIFY(
 	prov,NOT NULL,
 	postal_code,NOT NULL,
 	customerEmail,NOT NULL	
+);
+ 
+CREATE TABLE timber_review(
+	review# NUMBER CONSTRAINT review_num_pk PRIMARY KEY,
+	rating NUMBER(1) CONSTRAINT rating_ck CHECK(rating between 1 and 5),
+	dateOfReview DATE NOT NULL,
+	reviewComments VARCHAR2(1000) NOT NULL,
+	customer# NUMBER CONSTRAINT customer_num_fk REFERENCES timber_customer(customer#),
+	product# NUMBER CONSTRAINT product_num_fk REFERENCES timber_product(product#)
 );
 
 CREATE TABLE T_TAX(
