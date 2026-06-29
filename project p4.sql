@@ -83,20 +83,20 @@ CREATE TABLE timber_review(
 	product# NUMBER CONSTRAINT product_num_fk REFERENCES timber_product(product#)
 );
 
-CREATE TABLE T_TAX(
+CREATE TABLE timber_tax(
 	prov CHAR(2),
 	prov_hst_rate NUMBER(4,3),
 	gst_rate NUMBER(4,3),
 	pst_rate NUMBER(4,3)
 );
 
-CREATE TABLE T_SHIPPING_RATE(
+CREATE TABLE timber_ship_rate(
 	shiprate# NUMBER,
 	min_weight NUMBER(6,2),
 	max_weight NUMBER(6,2),
 	shippng_amount NUMBER(6,2)
 );
-CREATE TABLE T_SUPPLIER(
+CREATE TABLE timber_supplier(
 	supplierId NUMBER PRIMARY KEY,
 	supplierName VARCHAR2(100) NOT NULL,
 	supplierEmail VARCHAR2(100)
@@ -104,7 +104,7 @@ CREATE TABLE T_SUPPLIER(
 		UNIQUE,
 	city VARCHAR2(100),
 	supplierProv CHAR(2),
-	CONSTRAINT ck_tim_supplierProv CHECK (REGEXP_LIKE(supplierProv,[A-Z][A-Z][A-Z]))
+	CONSTRAINT ck_tim_supplierProv CHECK (REGEXP_LIKE(supplierProv,'^[A-Z][A-Z]$'))
 );
 
 CREATE TABLE T_SUPPLIER_ITEM(
@@ -114,7 +114,7 @@ CREATE TABLE T_SUPPLIER_ITEM(
 	CONSTRAINT fk_tim_supplier# FOREIGN KEY(supplierId) REFERENCES T_SUPPLIER_ITEM(supplierId),
 	CONSTRAINT fk_tim_product# FOREIGN KEY(productId) REFERENCES T_SUPPLIER_ITEM(supplierId)
 );
-CREATE TABLE T_ORDER (
+CREATE TABLE timber_order (
 	order# NUMBER CONSTRAINT t_order_ordnum_pk PRIMARY KEY,
 	customer# NUMBER CONSTRAINT t_order_custnum_fk FOREIGN KEY,
 	orderDate DATE CONSTRAINT t_order_orderDate_nn NOT NULL,

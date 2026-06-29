@@ -41,11 +41,11 @@ CREATE TABLE timber_supplier (
 CREATE TABLE timber_product (
     product#          NUMBER CONSTRAINT timber_product_pk PRIMARY KEY,
     category#         NUMBER CONSTRAINT timber_product_cat_fk REFERENCES timber_category(category#),
-    price             NUMBER(12,2) NOT NULL, 
-    quantity_on_hand  NUMBER(12) NOT NULL, 
+    price             NUMBER(12,2) NOT NULL,
+    quantity_on_hand  NUMBER(12) NOT NULL,
     description       VARCHAR2(1000) NOT NULL,
     title             VARCHAR2(150) NOT NULL,
-    weight_kg         NUMBER(12,2) NOT NULL, 
+    weight_kg         NUMBER(12,2) NOT NULL,
     isTaxExempt       NUMBER(1) NOT NULL,
     CONSTRAINT timber_product_price_ck CHECK (price > 0),
     CONSTRAINT timber_product_qty_ck CHECK (quantity_on_hand >= 0),
@@ -68,7 +68,6 @@ CREATE TABLE timber_customer (
     CONSTRAINT timber_cust_phone_ck CHECK (REGEXP_LIKE(phoneNumber, '^\d{3}\.\d{3}\.\d{4}$')),
     CONSTRAINT timber_cust_prov_ck CHECK (prov IN ('AB','BC','SK','MB','ON','QC','PE','NL','NT','YT','NS','NB','NU')),
     CONSTRAINT timber_cust_postal_ck CHECK (REGEXP_LIKE(postal_code, '^[A-Z]\d[A-Z]\d[A-Z]\d$')),
-    CONSTRAINT timber_cust_postal_uq UNIQUE (postal_code),
     CONSTRAINT timber_cust_email_uq UNIQUE (customerEmail),
     CONSTRAINT timber_cust_email_ck CHECK (REGEXP_LIKE(customerEmail, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')),
     CONSTRAINT timber_cust_member_ck CHECK (isTimberMember IN (0, 1))
@@ -79,7 +78,9 @@ CREATE TABLE timber_ship_rate (
     shiprate#        NUMBER CONSTRAINT timber_ship_rate_pk PRIMARY KEY,
     min_weight       NUMBER(6,2) NOT NULL,
     max_weight       NUMBER(6,2) NOT NULL,
-    shipping_amount  NUMBER(6,2) NOT NULL
+    shipping_amount  NUMBER(6,2) NOT NULL,
+    CONSTRAINT timber_ship_weight_ck CHECK (min_weight < max_weight),
+    CONSTRAINT timber_ship_amount_ck CHECK (shipping_amount >= 0)
 );
 
 -- Table 6: Tax Rate
@@ -150,4 +151,4 @@ ALTER TABLE timber_orderitems ADD (
     CONSTRAINT timber_orderitems_prod_fk FOREIGN KEY (product#) REFERENCES timber_product(product#)
 );
 
-SPOOL OFF
+SPOOL OFF;

@@ -33,8 +33,8 @@ CREATE TABLE timber_supplier (
     email_address VARCHAR2(100) NOT NULL CONSTRAINT supplier_email_uq UNIQUE,
     city          VARCHAR2(50) NOT NULL,
     prov          CHAR(2) NOT NULL,
-    CONSTRAINT supplier_email_ck CHECK (REGEXP_LIKE(email_address, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')),
-    CONSTRAINT supplier_prov_ck CHECK (prov IN ('AB','BC','SK','MB','ON','QC','PE','NL','NT','YT','NS','NB','NU'))
+    CONSTRAINT ck_timber_supplier_email CHECK (REGEXP_LIKE(email_address, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')),
+    CONSTRAINT ck_timber_supplier_prov CHECK (prov IN ('AB','BC','SK','MB','ON','QC','PE','NL','NT','YT','NS','NB','NU'))
 );
 
 -- Table 3: Product
@@ -88,7 +88,7 @@ CREATE TABLE timber_tax (
     prov_hst_rate  NUMBER(4,3),
     gst_rate       NUMBER(4,3),
     pst_rate       NUMBER(4,3),
-    CONSTRAINT tax_prov_ck CHECK (prov IN ('AB','BC','SK','MB','ON','QC','PE','NL','NT','YT','NS','NB','NU'))
+    CONSTRAINT ck_timber_tax_prov CHECK (prov IN ('AB','BC','SK','MB','ON','QC','PE','NL','NT','YT','NS','NB','NU'))
 );
 
 --------------------------------------------------------------------------------
@@ -99,8 +99,8 @@ CREATE TABLE timber_tax (
 CREATE TABLE timber_product_supplier (
     supplier#  NUMBER,
     product#   NUMBER,
-    CONSTRAINT prod_supp_pk PRIMARY KEY (supplier#, product#),
-    CONSTRAINT prod_supp_fk_supplier FOREIGN KEY (supplier#) REFERENCES timber_supplier(supplier#),
+    CONSTRAINT pk_timber_product_supplier_supplier# PRIMARY KEY (supplier#, product#),
+    CONSTRAINT fk_timber_product_supplier_product# FOREIGN KEY (supplier#) REFERENCES timber_supplier(supplier#),
     CONSTRAINT prod_supp_fk_product FOREIGN KEY (product#) REFERENCES timber_product(product#)
 );
 
